@@ -1,7 +1,8 @@
-var express     = require('express'),
-    bodyParser  = require('body-parser'),
-    mongoose    = require('mongoose'),
-    app         = express();
+var methodOverride  = require('method-override'),
+    bodyParser      = require('body-parser'),
+    mongoose        = require('mongoose'),
+    express         = require('express'),
+    app             = express();
 
 // TODO: Blog Model
 //       Title - Image - Body - Created (date)
@@ -9,12 +10,14 @@ var express     = require('express'),
 // Configure mongoose
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useUnifiedTopology', true);
+mongoose.set('useFindAndModify', false);
 mongoose.connect('mongodb://localhost/restful_blog');
 
 // Configure Express
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride("_method"));
 
 // Set up schema for the blog
 var blogSchema = new mongoose.Schema({
@@ -92,6 +95,18 @@ app.get('/blogs/:id/edit', function(req, res) {
       res.redirect('/blogs');
     } else {
       res.render('edit', {blog: foundBlog});
+    }
+  });
+});
+
+// Update Route
+app.put('/blogs/:id', function(req, res) {
+  Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog) {
+    if (err) {
+      console.log(err);
+      res.redirect('/blogs');
+    } else {
+      res.redirect('/blogs/' + req.params.id);
     }
   });
 });
