@@ -111,6 +111,19 @@ app.put('/blogs/:id', function(req, res) {
   });
 });
 
+// Delete Route
+app.delete('/blogs/:id', function(req, res) {
+  // Destroy blog
+  Blog.findByIdAndRemove(req.params.id, function(err) {
+    if (err) {
+      console.log(err);
+      res.redirect('/blogs');
+    } else {
+      res.redirect('/blogs');
+    }
+  });
+});
+
 // Start server on PORT 3000
 app.listen(3000, function() {
   console.log('RESTful Blog app server started on PORT 3000');
