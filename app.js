@@ -84,6 +84,18 @@ app.get('/blogs/:id', function(req, res) {
   });
 });
 
+// Edit Route
+app.get('/blogs/:id/edit', function(req, res) {
+  Blog.findById(req.params.id, function(err, foundBlog) {
+    if (err) {
+      console.log(err);
+      res.redirect('/blogs');
+    } else {
+      res.render('edit', {blog: foundBlog});
+    }
+  });
+});
+
 // Start server on PORT 3000
 app.listen(3000, function() {
   console.log('RESTful Blog app server started on PORT 3000');
