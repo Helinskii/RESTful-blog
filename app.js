@@ -38,7 +38,7 @@ var blogSchema = new mongoose.Schema({
 // Create the 'Blog' model based on the schema
 var Blog = mongoose.model('Blog', blogSchema);
 
-//
+// To store the current date
 var event;
 
 // RESTful Routes
@@ -85,7 +85,7 @@ app.post('/blogs', function(req, res) {
     } else {
       event = new Date();
       console.log('Created new : ' + event.toLocaleTimeString());
-      res.redirect('/blogs');
+      res.redirect('/blogs/' + newBlog._id);
     }
   });
 });
