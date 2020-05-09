@@ -85,7 +85,7 @@ app.post('/blogs', function(req, res) {
     } else {
       event = new Date();
       console.log('Created new : ' + event.toLocaleTimeString());
-      res.redirect('/blogs');
+      res.redirect('/blogs/' + newBlog._id);
     }
   });
 });
