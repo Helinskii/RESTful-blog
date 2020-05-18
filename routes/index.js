@@ -12,12 +12,12 @@ var User = require('../models/user');
 // Auth Routes //
 /////////////////
 
-// REGISTER ROUTE - Form for registering a new user
+// Register ROUTE - Form for registering a new user
 router.get('/register', function(req, res) {
   res.render('register');
 });
 
-// CREATE ROUTE - Register a new user in the DB
+// Create ROUTE - Register a new user in the DB
 router.post('/register', function(req, res) {
   // Set username
   var newUser = new User({username: req.body.username});
@@ -33,6 +33,24 @@ router.post('/register', function(req, res) {
       res.redirect('/blogs');
     });
   });
+});
+
+// Login ROUTE - Form for logging in
+router.get('/login', function(req, res) {
+  res.render('login');
+});
+
+// Login user using Passport middleware
+router.post('/login', passport.authenticate('local', {
+  successRedirect: '/blogs',
+  failureRedirect: '/login'
+}), function(err, req, res) {
+});
+
+// Logout ROUTE
+router.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/blogs');
 });
 
 module.exports = router;
