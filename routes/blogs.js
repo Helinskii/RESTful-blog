@@ -16,14 +16,14 @@ router.get('/', function(req, res) {
       console.log(err);
     } else {
       // Renders the 'index' template with 'blogs' object
-      res.render('blogs/index', {blogs: blogs});
+      res.render('blogs/index', {blogs: blogs, page: 'blogs'});
     }
   });
 });
 
 // New Route - Display a new 'Blog Post' form
 router.get('/new', middleware.isLoggedIn, function(req, res) {
-  res.render('blogs/new');
+  res.render('blogs/new', {page: 'new'});
 });
 
 // Create Route - Create a new 'Blog Post'
@@ -55,7 +55,7 @@ router.get('/:id', function(req, res) {
     if (err || !foundBlog) {
       console.log(err);
       req.flash('error', 'Blog not found.');
-      res.redirect('back');
+      res.redirect('/blogs');
     } else {
       // Render 'show' template with 'blog' object
       res.render('blogs/show', {blog: foundBlog});

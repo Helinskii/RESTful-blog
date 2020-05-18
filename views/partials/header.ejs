@@ -14,13 +14,13 @@
 
         <div class="ui container">
           <a href="/"><div class="header item"><i class="paper plane icon"></i>Blog Site</div></a>
-          <a href="/" class="active item">Home</a>
-          <a href="/blogs/new" class="item">New Post</a>
+          <a href="/" class="<%= typeof page !== 'undefined' && page === 'blogs' ? 'active' : '' %> item">Home</a>
+          <a href="/blogs/new" class="<%= typeof page !== 'undefined' && page === 'new' ? 'active' : '' %> item">New Post</a>
 
           <div class="right menu">
             <% if (!currentUser) { %>
-              <a href="/register" class="item">Sign Up</a>
-              <a href="/login" class="item">Login</a>
+              <a href="/register" class="<%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %> item">Sign Up</a>
+              <a href="/login" class="<%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %> item">Login</a>
             <% } else { %>
               <a href="#" class="ui medium header item"><em>Signed in as <span style="color: white"><%= currentUser.username %></span></em></a>
               <a href="/logout" class="item">Logout</a>

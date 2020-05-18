@@ -11,6 +11,8 @@
 
       <div class="content ui small label">
         <span><%= blog.created.toDateString() %></span>
+        <i class="chevron circle right icon"></i>
+        <span><em>Submitted by </em><strong><%= blog.author.username %></strong></span>
       </div>
 
       <div class="ui divider"></div>

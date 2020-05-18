@@ -14,7 +14,7 @@ var User = require('../models/user');
 
 // Register ROUTE - Form for registering a new user
 router.get('/register', function(req, res) {
-  res.render('register');
+  res.render('register', {page: 'register'});
 });
 
 // Create ROUTE - Register a new user in the DB
@@ -39,7 +39,7 @@ router.post('/register', function(req, res) {
 
 // Login ROUTE - Form for logging in
 router.get('/login', function(req, res) {
-  res.render('login');
+  res.render('login', {page: 'login'});
 });
 
 // Login user using Passport middleware
