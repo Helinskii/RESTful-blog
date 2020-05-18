@@ -21,11 +21,13 @@
 
       <div class="ui hidden divider"></div>
 
-      <a class="ui orange basic button" href="/blogs/<%= blog._id %>/edit">Edit Post</a>
+      <% if (currentUser && blog.author.id.equals(currentUser._id)) { %>
+        <a class="ui orange basic button" href="/blogs/<%= blog._id %>/edit">Edit Post</a>
 
-      <form style="display: inline" action="/blogs/<%= blog._id %>?_method=DELETE" method="POST">
-        <button class="ui blue basic right floated button">Delete Post</button>
-      </form>
+        <form style="display: inline" action="/blogs/<%= blog._id %>?_method=DELETE" method="POST">
+          <button class="ui blue basic right floated button">Delete Post</button>
+        </form>
+      <% } %>
 
     </div>
   </div>
