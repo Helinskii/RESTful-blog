@@ -15,14 +15,14 @@ router.get('/', function(req, res) {
       console.log(err);
     } else {
       // Renders the 'index' template with 'blogs' object
-      res.render('index', {blogs: blogs});
+      res.render('blogs/index', {blogs: blogs});
     }
   });
 });
 
 // New Route - Display a new 'Blog Post' form
 router.get('/new', function(req, res) {
-  res.render('new');
+  res.render('blogs/new');
 });
 
 // Create Route - Create a new 'Blog Post'
@@ -34,7 +34,7 @@ router.post('/', function(req, res) {
   Blog.create(req.body.blog, function(err, newBlog) {
     if (err) {
       console.log(err);
-      res.render('new');
+      res.render('blogs/new');
     } else {
       res.redirect('/blogs/' + newBlog._id);
     }
@@ -50,7 +50,7 @@ router.get('/:id', function(req, res) {
       res.redirect('/blogs');
     } else {
       // Render 'show' template with 'blog' object
-      res.render('show', {blog: foundBlog});
+      res.render('blogs/show', {blog: foundBlog});
     }
   });
 });
@@ -63,7 +63,7 @@ router.get('/:id/edit', function(req, res) {
       res.redirect('/blogs');
     } else {
       // Render 'edit' template with 'blog' object
-      res.render('edit', {blog: foundBlog});
+      res.render('blogs/edit', {blog: foundBlog});
     }
   });
 });

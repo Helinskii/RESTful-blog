@@ -1,4 +1,4 @@
-<%- include('partials/header') %>
+<%- include('../partials/header') %>
 
 <div class="ui main text container">
   <div class="ui huge header">RESTful Blog App</div>
@@ -20,9 +20,9 @@
               <p><%- blog.body.substring(0, 100) %>...</p>
             </div>
             <div class="extra">
-              <a class="ui olive mini button" href="/blogs/<%= blog._id %>">
+              <a class="ui grey medium button" href="/blogs/<%= blog._id %>">
                 Read More
-                <i class="right chevron icon"></i>
+                <i class="arrow alternate circle right outline icon"></i>
               </a>
             </div>
           </div>
@@ -33,4 +33,4 @@
   </div>
 </div>
 
-<%- include('partials/footer') %>
+<%- include('../partials/footer') %>
