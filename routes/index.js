@@ -52,6 +52,7 @@ router.get('/login', function(req, res) {
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/blogs',
   failureRedirect: '/login',
+  successFlash: 'You\'re now logged in!',
   failureFlash: true
 }), function(err, req, res) {
 });

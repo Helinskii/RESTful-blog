@@ -1,6 +1,7 @@
 // All the middleware goes here
 var middlewareObj = {};
 
+// Import schemas
 var Blog = require('../models/blog');
 
 // Middleware to check ownership of 'blog'

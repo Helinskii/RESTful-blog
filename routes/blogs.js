@@ -43,6 +43,7 @@ router.post('/', middleware.isLoggedIn, function(req, res) {
       newBlog.author.username = req.user.username;
       newBlog.save();
 
+      req.flash('success', 'New blog created!');
       res.redirect('/blogs/' + newBlog._id);
     }
   });

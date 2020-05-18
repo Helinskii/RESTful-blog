@@ -1,7 +1,7 @@
 // Import dependencies
 var mongoose = require('mongoose');
 
-// Set up schema for the blog
+// Define schema
 var blogSchema = new mongoose.Schema({
   title: String,
   image: String,
