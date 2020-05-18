@@ -9,6 +9,13 @@ var blogSchema = new mongoose.Schema({
   created: {
     type: Date,
     default: Date.now // Gives the current system date
+  },
+  author: {
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    username: String
   }
 });
 

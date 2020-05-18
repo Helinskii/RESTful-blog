@@ -26,10 +26,12 @@ router.post('/register', function(req, res) {
     if (err) {
       // If registration is unsuccessful render the form again
       console.log(err);
+      req.flash('error', err.message);
       return res.redirect('register');
     }
     // If registration is successful redirect to 'blogs' page
     passport.authenticate('local')(req, res, function() {
+      req.flash('success', 'Signed up successfully!');
       res.redirect('/blogs');
     });
   });
@@ -43,13 +45,15 @@ router.get('/login', function(req, res) {
 // Login user using Passport middleware
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/blogs',
-  failureRedirect: '/login'
+  failureRedirect: '/login',
+  failureFlash: true
 }), function(err, req, res) {
 });
 
 // Logout ROUTE
 router.get('/logout', function(req, res) {
   req.logout();
+  req.flash('success', 'You\'ve logged out successfully.');
   res.redirect('/blogs');
 });
 

@@ -6,6 +6,7 @@ var expressSanitizer  = require('express-sanitizer'),
     mongoose          = require('mongoose'),
     passport          = require('passport'),
     express           = require('express'),
+    flash             = require('connect-flash');
     app               = express();
 
 // Import schemas
@@ -35,6 +36,7 @@ app.use(express.static('public'));
 app.use(expressSanitizer());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
+app.use(flash());
 
 // Configure Express to use Passport
 app.use(require('express-session') ({
@@ -49,6 +51,13 @@ app.use(passport.session());
 passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+app.use(function(req, res, next) {
+  res.locals.currentUser = req.user;
+  res.locals.error = req.flash('error');
+  res.locals.success = req.flash('success');
+  next();
+});
 
 // Root Route - Redirects to '/blogs'
 app.get('/', function(req, res) {

@@ -1,5 +1,6 @@
 // Import dependencies
 var express = require('express');
+var middleware = require('../middleware');
 
 // Define 'router'
 var router = express.Router();
@@ -21,12 +22,12 @@ router.get('/', function(req, res) {
 });
 
 // New Route - Display a new 'Blog Post' form
-router.get('/new', function(req, res) {
+router.get('/new', middleware.isLoggedIn, function(req, res) {
   res.render('blogs/new');
 });
 
 // Create Route - Create a new 'Blog Post'
-router.post('/', function(req, res) {
+router.post('/', middleware.isLoggedIn, function(req, res) {
   // Sanitize the 'body' of the 'blog'
   req.body.blog.body = req.sanitize(req.body.blog.body);
 
@@ -34,8 +35,14 @@ router.post('/', function(req, res) {
   Blog.create(req.body.blog, function(err, newBlog) {
     if (err) {
       console.log(err);
+      req.flash('error', 'Something went wrong. Please try again.');
       res.render('blogs/new');
     } else {
+      // Add username and ID to blog
+      newBlog.author.id = req.user._id;
+      newBlog.author.username = req.user.username;
+      newBlog.save();
+
       res.redirect('/blogs/' + newBlog._id);
     }
   });
@@ -45,9 +52,10 @@ router.post('/', function(req, res) {
 router.get('/:id', function(req, res) {
   // Find 'Blog Post' in the database using the ID
   Blog.findById(req.params.id, function(err, foundBlog) {
-    if (err) {
+    if (err || !foundBlog) {
       console.log(err);
-      res.redirect('/blogs');
+      req.flash('error', 'Blog not found.');
+      res.redirect('back');
     } else {
       // Render 'show' template with 'blog' object
       res.render('blogs/show', {blog: foundBlog});
@@ -56,11 +64,12 @@ router.get('/:id', function(req, res) {
 });
 
 // Edit Route - Display form to edit 'Blog Post'
-router.get('/:id/edit', function(req, res) {
+router.get('/:id/edit', middleware.checkBlogOwnership, function(req, res) {
   Blog.findById(req.params.id, function(err, foundBlog) {
     if (err) {
       console.log(err);
-      res.redirect('/blogs');
+      req.flash('error', 'Something went wrong. Please try again.');
+      res.redirect('/blogs/' + req.params.id);
     } else {
       // Render 'edit' template with 'blog' object
       res.render('blogs/edit', {blog: foundBlog});
@@ -69,7 +78,7 @@ router.get('/:id/edit', function(req, res) {
 });
 
 // Update Route - Update the 'Blog Post'
-router.put('/:id', function(req, res) {
+router.put('/:id', middleware.checkBlogOwnership, function(req, res) {
 
   // Sanitize the body of the 'blog post'.
   req.body.blog.body = req.sanitize(req.body.blog.body);
@@ -81,13 +90,14 @@ router.put('/:id', function(req, res) {
       res.redirect('/blogs');
     } else {
       // Redirect to the 'Blog Post' after updating
+      req.flash('success', 'Blog updated successfully.');
       res.redirect('/blogs/' + req.params.id);
     }
   });
 });
 
 // Delete Route - Delete the 'Blog Post'
-router.delete('/:id', function(req, res) {
+router.delete('/:id', middleware.checkBlogOwnership, function(req, res) {
   // Find 'Blog Post' by ID and delete it
   Blog.findByIdAndRemove(req.params.id, function(err) {
     if (err) {
@@ -95,6 +105,7 @@ router.delete('/:id', function(req, res) {
       res.redirect('/blogs');
     } else {
       // Render index after deleting 'Blog Post'
+      req.flash('success', 'Blog deleted successfully.');
       res.redirect('/blogs');
     }
   });
