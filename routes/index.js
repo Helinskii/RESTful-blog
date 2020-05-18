@@ -8,6 +8,12 @@ var router = express.Router();
 // Import schemas
 var User = require('../models/user');
 
+// Root Route - Redirects to '/blogs'
+router.get('/', function(req, res) {
+  // Redirect to '/blogs' route
+  res.redirect('/blogs');
+});
+
 /////////////////
 // Auth Routes //
 /////////////////
@@ -57,4 +63,5 @@ router.get('/logout', function(req, res) {
   res.redirect('/blogs');
 });
 
+// Export 'router'
 module.exports = router;

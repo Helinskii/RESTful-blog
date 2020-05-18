@@ -5,9 +5,13 @@ var expressSanitizer  = require('express-sanitizer'),
     bodyParser        = require('body-parser'),
     mongoose          = require('mongoose'),
     passport          = require('passport'),
+    session           = require('express-session'),
     express           = require('express'),
     flash             = require('connect-flash');
     app               = express();
+
+var MongoStore        = require('connect-mongo')(session);
+
 
 // Import schemas
 var Blog = require('./models/blog'),
@@ -38,11 +42,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 app.use(flash());
 
-// Configure Express to use Passport
-app.use(require('express-session') ({
+// Session setup
+app.use(session({
   secret: 'Hakoona Matata',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  cookie: { maxAge: 180 * 60 * 1000 } // 180 minutes session expiration
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -52,6 +58,7 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// Make variables available to all ROUTES
 app.use(function(req, res, next) {
   res.locals.currentUser = req.user;
   res.locals.error = req.flash('error');
@@ -59,12 +66,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-// Root Route - Redirects to '/blogs'
-app.get('/', function(req, res) {
-  // Redirect to '/blogs' route
-  res.redirect('/blogs');
-});
-
+// Configure Express to use routes
 app.use(indexRoutes);
 app.use('/blogs', blogRoutes);
 
