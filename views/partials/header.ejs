@@ -18,9 +18,13 @@
           <a href="/blogs/new" class="item">New Post</a>
 
           <div class="right menu">
-            <a href="/register" class="item">Sign Up</a>
-            <a href="/login" class="item">Login</a>
-            <a href="/logout" class="item">Logout</a>
+            <% if (!currentUser) { %>
+              <a href="/register" class="item">Sign Up</a>
+              <a href="/login" class="item">Login</a>
+            <% } else { %>
+              <a href="#" class="ui medium header item"><em>Signed in as <span style="color: white"><%= currentUser.username %></span></em></a>
+              <a href="/logout" class="item">Logout</a>
+            <% } %>
           </div>
         </div>
 
