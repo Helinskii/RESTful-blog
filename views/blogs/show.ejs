@@ -39,7 +39,28 @@
     Comments
   </div>
 
+  <div class="ui accordion field">
+    <div class="<%= blog.comments.length === 0 ? 'active' : '' %> title">
+      <button class="ui secondary mini submit button">
+        <i class="icon edit"></i> Add Comment
+      </button>
+    </div>
+    <div class="<%= blog.comments.length === 0 ? 'active' : '' %> content field">
+      <form class="ui reply form" action="/blogs/<%= blog._id %>/comments" method="POST">
+        <div class="field">
+          <input type="text" name="comment[text]" placeholder="Comment">
+        </div>
+        <button class="ui submit button">
+          Add
+        </button>
+      </form>
+    </div>
+  </div>
+
   <div class="ui comments">
+    <% if (blog.comments.length === 0) { %>
+      <em style="color: grey;">No comments yet.</em>
+    <% } %>
 
     <% blog.comments.forEach(function(comment) { %>
       <div class="ui segment comment">
@@ -52,7 +73,23 @@
             <%= comment.text %>
           </div>
           <div class="actions">
-            <a class="edit">Edit</a>
+
+            <div class="ui accordion field">
+              <div class="title">
+                <a class="edit">Edit</a>
+              </div>
+              <div class="content field">
+                <form class="ui form" action="/blogs/<%= blog._id %>/comments/<%= comment._id %>?_method=PUT" method="POST">
+                  <div class="field">
+                    <input type="text" name="comment[text]" value="<%= comment.text %>">
+                  </div>
+                  <button class="ui secondary submit mini button">
+                    Update
+                  </button>
+                </form>
+              </div>
+            </div>
+
             <form class="delete-form" action="/blogs/<%= blog._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
               <input class="delete" type="submit" value="Delete">
             </form>
@@ -60,15 +97,6 @@
         </div>
       </div>
     <% }) %>
-
-    <form class="ui reply form" action="/blogs/<%= blog._id %>/comments" method="POST">
-     <div class="field">
-       <input type="text" name="comment[text]" placeholder="Text">
-     </div>
-     <button class="ui primary submit labeled icon button">
-       <i class="icon edit"></i> Add Comment
-     </button>
-   </form>
 
   </div>
 

@@ -18,6 +18,14 @@ i.icon {
   background-color: #f7f4e9;
 }
 
+.ui.accordion {
+  display: inline;
+}
+
+.ui.accordion .title {
+  display: inline;
+}
+
 .delete {
   cursor: pointer;
   border: none;

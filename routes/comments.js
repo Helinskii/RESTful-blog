@@ -42,7 +42,19 @@ router.post('/', function(req, res) {
   });
 });
 
-// Edit ROUTE
+// Update ROUTE - Update comment
+router.put('/:comment_id', function(req, res) {
+  Comm.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment) {
+    if (err || !updatedComment) {
+      console.log(err);
+      req.flash('error', 'Could not update comment.');
+      res.redirect('back');
+    } else {
+      req.flash('success', 'Comment updated.');
+      res.redirect('/blogs/' + req.params.id);
+    }
+  });
+});
 
 // Delete ROUTE
 router.delete('/:comment_id', function(req, res) {
