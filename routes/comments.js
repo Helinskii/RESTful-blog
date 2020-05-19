@@ -42,4 +42,20 @@ router.post('/', function(req, res) {
   });
 });
 
+// Edit ROUTE
+
+// Delete ROUTE
+router.delete('/:comment_id', function(req, res) {
+  Comm.findByIdAndRemove(req.params.comment_id, function(err) {
+    if (err) {
+      console.log(err);
+      req.flash('error', 'Could not delete comment.');
+      res.redirect('back');
+    } else {
+      req.flash('success', 'Comment deleted.');
+      res.redirect('/blogs/' + req.params.id);
+    }
+  });
+});
+
 module.exports = router;

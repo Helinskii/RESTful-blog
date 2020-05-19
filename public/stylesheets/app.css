@@ -17,3 +17,19 @@ i.icon {
 .container .segment {
   background-color: #f7f4e9;
 }
+
+.delete {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  color: rgba(0,0,0,.4);
+  font-size: .875em;
+}
+
+.delete:hover {
+  color: rgba(0, 0, 0, 1);
+}
+
+.delete-form {
+  display: inline;
+}

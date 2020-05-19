@@ -6,7 +6,8 @@ var middleware = require('../middleware');
 var router = express.Router();
 
 // Import schemas
-var Blog = require('../models/blog');
+var Blog = require('../models/blog'),
+    Comm = require('../models/comment');
 
 // Index Route - Display all 'Blog Posts'
 router.get('/', function(req, res) {
@@ -100,14 +101,22 @@ router.put('/:id', middleware.checkBlogOwnership, function(req, res) {
 // Delete Route - Delete the 'Blog Post'
 router.delete('/:id', middleware.checkBlogOwnership, function(req, res) {
   // Find 'Blog Post' by ID and delete it
-  Blog.findByIdAndRemove(req.params.id, function(err) {
+  Blog.findByIdAndRemove(req.params.id, function(err, blogRemoved) {
     if (err) {
       console.log(err);
       res.redirect('/blogs');
     } else {
-      // Render index after deleting 'Blog Post'
-      req.flash('success', 'Blog deleted successfully.');
-      res.redirect('/blogs');
+      // Delete connected 'comments'
+      Comm.deleteMany({_id: {$in: blogRemoved.comments}}, function(err) {
+        if (err) {
+          console.log(err);
+          req.flash('error', 'ERROR.');
+          res.redirect('/blogs');
+        } else {
+          req.flash('success', 'Blog deleted.');
+          res.redirect('/blogs');
+        }
+      });
     }
   });
 });
