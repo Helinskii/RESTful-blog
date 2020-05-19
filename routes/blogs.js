@@ -52,7 +52,7 @@ router.post('/', middleware.isLoggedIn, function(req, res) {
 // Show Route - Display a single 'Blog Post'
 router.get('/:id', function(req, res) {
   // Find 'Blog Post' in the database using the ID
-  Blog.findById(req.params.id, function(err, foundBlog) {
+  Blog.findById(req.params.id).populate('comments').exec(function(err, foundBlog) {
     if (err || !foundBlog) {
       console.log(err);
       req.flash('error', 'Blog not found.');

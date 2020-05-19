@@ -18,7 +18,8 @@ var Blog = require('./models/blog'),
     User = require('./models/user');
 
 // Import routes
-var indexRoutes   = require('./routes/index'),
+var commentRoutes = require('./routes/comments'),
+    indexRoutes   = require('./routes/index'),
     blogRoutes    = require('./routes/blogs');
 
 // Configure mongoose
@@ -53,6 +54,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Import 'moment' and make it available to all views
+app.locals.moment = require('moment');
+
 // Configure Passport
 passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
@@ -69,6 +73,7 @@ app.use(function(req, res, next) {
 // Configure Express to use routes
 app.use(indexRoutes);
 app.use('/blogs', blogRoutes);
+app.use('/blogs/:id/comments', commentRoutes);
 
 // Start server on PORT 3000
 var port = process.env.PORT;

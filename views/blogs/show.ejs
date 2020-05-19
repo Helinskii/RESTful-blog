@@ -10,7 +10,7 @@
       <img class="ui fluid rounded image" src="<%= blog.image %>">
 
       <div class="content ui large label">
-        <span><%= blog.created.toDateString() %></span>
+        <span><%= moment(blog.created).fromNow() %></span>
         <i class="chevron circle right icon"></i>
         <span><em>Submitted by </em><strong><%= blog.author.username %></strong></span>
       </div>
@@ -32,6 +32,42 @@
       <% } %>
 
     </div>
+  </div>
+
+  <div class="ui horizontal divider">
+    <i class="comments icon"></i>
+    Comments
+  </div>
+
+  <div class="ui comments">
+
+    <% blog.comments.forEach(function(comment) { %>
+      <div class="ui segment comment">
+        <div class="content">
+          <a class="author"><%= comment.author.username %></a>
+          <div class="metadata">
+            <div class="date"><%= moment(comment.created).fromNow() %></div>
+          </div>
+          <div class="text">
+            <%= comment.text %>
+          </div>
+          <div class="actions">
+            <a class="edit">Edit</a>
+            <a class="delete">Delete</a>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+
+    <form class="ui reply form" action="/blogs/<%= blog._id %>/comments" method="POST">
+     <div class="field">
+       <input type="text" name="comment[text]" placeholder="Text">
+     </div>
+     <button class="ui primary submit labeled icon button">
+       <i class="icon edit"></i> Add Comment
+     </button>
+   </form>
+
   </div>
 
 </div>
