@@ -18,6 +18,14 @@ i.icon {
   background-color: #f7f4e9;
 }
 
+.comments .content {
+  padding: 10px;
+}
+
+.ui.comments .comment .actions {
+  font-size: 1em;
+}
+
 .ui.accordion {
   display: inline;
 }
@@ -31,7 +39,7 @@ i.icon {
   border: none;
   background-color: transparent;
   color: rgba(0,0,0,.4);
-  font-size: .875em;
+  font-family: Lato, 'Helvetica Neue', Arial, Helvetica ,sans-serif;
 }
 
 .delete:hover {
