@@ -72,28 +72,32 @@
           <div class="text">
             <%= comment.text %>
           </div>
-          <div class="actions">
 
-            <div class="ui accordion field">
-              <div class="title">
-                <a class="edit">Edit</a>
+          <% if (currentUser && comment.author.id.equals(currentUser._id)) { %>
+            <div class="actions">
+
+              <div class="ui accordion field">
+                <div class="title">
+                  <a class="edit">Edit</a>
+                </div>
+                <div class="content field">
+                  <form class="ui form" action="/blogs/<%= blog._id %>/comments/<%= comment._id %>?_method=PUT" method="POST">
+                    <div class="field">
+                      <input type="text" name="comment[text]" value="<%= comment.text %>">
+                    </div>
+                    <button class="ui secondary submit mini button">
+                      Update
+                    </button>
+                  </form>
+                </div>
               </div>
-              <div class="content field">
-                <form class="ui form" action="/blogs/<%= blog._id %>/comments/<%= comment._id %>?_method=PUT" method="POST">
-                  <div class="field">
-                    <input type="text" name="comment[text]" value="<%= comment.text %>">
-                  </div>
-                  <button class="ui secondary submit mini button">
-                    Update
-                  </button>
-                </form>
-              </div>
+
+              <form class="delete-form" action="/blogs/<%= blog._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                <input class="delete" type="submit" value="Delete">
+              </form>
             </div>
+          <% } %>  
 
-            <form class="delete-form" action="/blogs/<%= blog._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
-              <input class="delete" type="submit" value="Delete">
-            </form>
-          </div>
         </div>
       </div>
     <% }) %>

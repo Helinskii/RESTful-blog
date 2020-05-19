@@ -10,7 +10,7 @@ var Blog = require('../models/blog'),
     Comm = require('../models/comment');
 
 // Create ROUTE
-router.post('/', function(req, res) {
+router.post('/', middleware.isLoggedIn, function(req, res) {
   // Find 'blog'
   Blog.findById(req.params.id, function(err, foundBlog) {
     if (err || !foundBlog) {
@@ -43,7 +43,7 @@ router.post('/', function(req, res) {
 });
 
 // Update ROUTE - Update comment
-router.put('/:comment_id', function(req, res) {
+router.put('/:comment_id', middleware.checkCommentOwnership, function(req, res) {
   Comm.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment) {
     if (err || !updatedComment) {
       console.log(err);
@@ -57,7 +57,7 @@ router.put('/:comment_id', function(req, res) {
 });
 
 // Delete ROUTE
-router.delete('/:comment_id', function(req, res) {
+router.delete('/:comment_id', middleware.checkCommentOwnership, function(req, res) {
   Comm.findByIdAndRemove(req.params.comment_id, function(err) {
     if (err) {
       console.log(err);
